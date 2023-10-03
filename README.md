@@ -24,7 +24,7 @@ Este é um projeto de controle de vendas em Python que permite registrar e visua
 
 1. **Clone o Repositório**: Clone este repositório em sua máquina local.
 ```
-git clone https://github.com/KaueMagnus/ControleVendas-python
+git clone https://github.com/KaueMagnus/ControleVendas-python.git
 ```
 3. **Execute o Programa**: Inicie o programa Python.
    
