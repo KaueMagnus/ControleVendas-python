@@ -1,4 +1,4 @@
-# Controle de Vendas 📈
+# Controle de Vendas 📈 -- EM PROGRESSO
 
 Um sistema simples de controle de vendas em Python.
 
