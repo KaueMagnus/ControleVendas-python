@@ -1,193 +1,135 @@
 import os               
-def limpar_tela():      #definindo a instrução que irá limpar a tela em cada iteração.
+def limpar_tela():                #função para limpar a tela.
     sistema = os.name
-    if sistema == "posix":  # Linux ou macOS
+    if sistema == "posix":        #linux e macOS
         os.system("clear")
-    elif sistema == "nt":  # Windows
+    elif sistema == "nt":         #windows
         os.system("cls")
-        
-from tabulate import tabulate        
 
+from time import sleep            #importando biblioteca time para utilizar a função sleep como um "temporizador" na linha 100.
+        
+from tabulate import tabulate     #importando a biblioteca tabulate para utilizar as tabelas.   
+
+    #Lista com os dados dos vendedores(ID, NOME, REGIÃO e VENDAS)
 vendedores = {
-    "Kaue": {"regioes": ["Litoral"], "vendas": []},
-    "João": {"regioes": ["Litoral"], "vendas": []},
-    "Felipe": {"regioes": ["Litoral"], "vendas": []},
-    "Alice": {"regioes": ["Serra"], "vendas": []},
-    "Paulo": {"regioes": ["Serra"], "vendas": []},
-    "Rogério": {"regioes": ["Serra"], "vendas": []},
-    "Cleiton": {"regioes": ["Norte"], "vendas": []},
-    "Mauricio": {"regioes": ["Norte"], "vendas": []},
-    "Joana": {"regioes": ["Norte"], "vendas": []},
+    1: {"nome": "Kaue", "regioes": ["Litoral"], "vendas": []},
+    2: {"nome": "João", "regioes": ["Litoral"], "vendas": []},
+    3: {"nome": "Felipe", "regioes": ["Litoral"], "vendas": []},
+    4: {"nome": "Anderson", "regioes": ["Litoral"], "vendas": []}, 
+    5: {"nome": "Lupim", "regioes": ["Serra"], "vendas": []},
+    6: {"nome": "Clara", "regioes": ["Serra"], "vendas": []},
+    7: {"nome": "Rogério", "regioes": ["Serra"], "vendas": []},
+    8: {"nome": "Cleiton", "regioes": ["Norte"], "vendas": []},
+    9: {"nome": "Mauricio", "regioes": ["Norte"], "vendas": []},
+    10: {"nome": "Joana", "regioes": ["Norte"], "vendas": []},
 }
-        
-vendedores_tabela = [
-    ['Kaue', 'Litoral'],
-    ['João', 'Litoral'],
-    ['Felipe', 'Litoral'],
-    ['Anderson', 'Litoral'],
-    ['Alice', 'Serra'],
-    ['Paulo', 'Serra'],
-    ['Rogério', 'Serra'],
-    ['Cleiton', 'Norte'],
-    ['Mauricio', 'Norte'],
-    ['Joana', 'Norte'],
-]
 
-while True:  # Use um loop infinito para continuar o programa até que o usuário decida sair.
-    limpar_tela()
+    #Definindo a função de criar e imprimir a tabela dos vendedores com ID, NOME e REGIÃO.        
+def imprimir_tabela_vendedores():
+    cabecalho = ["ID", "VENDEDORES", "REGIÃO"]
+    tabela_vendedores = [[str(id), vendedor["nome"], ", ".join(vendedor["regioes"])] for id, vendedor in vendedores.items()]
+    tabela = tabulate(tabela_vendedores, headers=cabecalho, tablefmt="grid")
+    print(tabela)
+    
+    #Definindo a função de criar e imprimir a tabela para exibir os dados ID, NOME, REGIÃO e as VENDAS de cada vendedor.    
+def imprimir_tabela_vendas():
+    cabecalho = ["ID", "VENDEDORES", "REGIÃO", "VENDAS",]
+    tabela_vendedores = []
+    
+    for id, vendedor in vendedores.items():
+        total_vendas = sum(vendedor["vendas"])  
+        tabela_vendedores.append([str(id), vendedor["nome"], ", ".join(vendedor["regioes"]), total_vendas])
+
+    tabela = tabulate(tabela_vendedores, headers=cabecalho, tablefmt="grid")
+    print(tabela)
+    
+    #Definindo a função que soma todas as vendas dos vendedores.
+def calcular_total_de_todas_as_vendas():
+    total = sum(sum(vendedor["vendas"]) for vendedor in vendedores.values())
+    return total
+
+    #Definindo a função que exibe e imprime a tabela que exibe o total de vendas.
+def exibir_tabela_total_de_vendas():
+    total = calcular_total_de_todas_as_vendas()
+    tabela = tabulate([["TOTAL DE VENDAS", total]], tablefmt="grid")
+    print(tabela)    
+
+    #Definindo a função que registra cada venda.
+def registrar_venda(vendedor, quantia):
+    vendedor["vendas"].append(quantia)
+    
+while True: 
+
+    limpar_tela()           #Menu inicial
     print("==========CONTROLE DE VENDAS==========")
 
     print("1 - Registrar vendas")
     print("2 - Visualizar vendas")
-    print("3 - Sair")  # Adicione a opção "Sair" para permitir que o usuário saia do programa.
-    opcao = int(input("Informe a opção desejada (1/2/3): "))
+    print("3 - Exibir total de vendas")  
+    print("4 - Sair")
+    opcao = int(input("Informe a opção desejada (1/2/3/4): "))
 
-    if opcao == 1:
-
-        limpar_tela()
-        print("==========REGISTRAR VENDAS==========")
-        
-        cabecalho = ["VENDEDORES", "REGIÃO"]
-        
-        
-        tabela = tabulate(vendedores_tabela, headers=cabecalho, tablefmt="grid")
-        
-        print(tabela)
-        
-        def registrar_venda(vendedor, quantia):
-            vendedor["vendas"].append(quantia_venda)
-        
-        letra = input("Informe a primeira letra do vendedor: ")
-        letra = letra.upper()
-        
-        vendedores_com_mesma_letra = [nome for nome in vendedores if nome.startswith(letra)]
-
-        if not vendedores_com_mesma_letra:
-            print("Nenhum vendedor encontrado com essa letra.")
+    match opcao:
             
-        else:
-            if len(vendedores_com_mesma_letra) == 1:
-                # Se há apenas um vendedor com a mesma letra, atribui os dados diretamente
-                nome_vendedor = vendedores_com_mesma_letra[0]
-                dados_vendedor = vendedores[nome_vendedor]
-                print(f"Dados do vendedor: {nome_vendedor}")
-                print(f"Regiões atendidas: {', '.join(dados_vendedor['regioes'])}")
-                
+        case 1: #Selecionado a opção 1 no menu inicial:
+            limpar_tela()
+            
+            print("==========REGISTRAR VENDAS==========")
+                    
+            imprimir_tabela_vendedores()
+            
+            #Guarda o valor do ID informado.       
+            id_vendedor = int(input("Informe o ID do vendedor: "))
+            
+            #Se o ID informado é 0, quebra a instrução e volta ao menu inicial.            
+            if id_vendedor == 0:
+                break
+            
+            #Se o ID informado consta na lista {vendedores} o if abaixo é executado:            
+            if id_vendedor in vendedores:
+                            
+                vendedor = vendedores[id_vendedor]
+                print(f"Dados do vendedor: {vendedor['nome']}")
+                print(f"Regiões atendidas: {', '.join(vendedor['regioes'])}")
+                            
                 quantia_venda = float(input("Informe a quantia da venda: "))
-                vendedor = vendedores[nome_vendedor]
+                vendedor = vendedores[id_vendedor]
                 registrar_venda(vendedor, quantia_venda)
-                
+                                 
                 print("\nRegistro de venda realizado com sucesso!\n")
-                
+                sleep(1.5)
+            
+            #Se o ID informado não consta na lista {vendedores} o else abaixo é executado:                
             else:
-                #Se há mais de um vendedor com a mesma letra, solicita uma entrada adicional
-                print("Vários vendedores encontrados com a mesma letra:")
-                for nome_vendedor in vendedores_com_mesma_letra:
-                    print(nome_vendedor)
-            
-                nome_vendedor = input("Informe o nome completo do vendedor: ")
-                
-                if nome_vendedor in vendedores:
-                    dados_vendedor = vendedores[nome_vendedor]
-                    print(f"Dados do vendedor: {nome_vendedor}")
-                    print(f"Regiões atendidas: {', '.join(dados_vendedor['regioes'])}")
-                    
-                    quantia_venda = float(input("Informe a quantia da venda: "))
-                    vendedor = vendedores[nome_vendedor]
-                    registrar_venda(vendedor, quantia_venda)
-                    
-                    print("\nRegistro de venda realizado com sucesso!\n")  
-                                      
-                else:
-                    print("Nome de vendedor não encontrado.")
+                print("Vendedor não encontrado!")  
+                input("Pressione Enter para voltar ao menu principal...")        
         
-                    
-        input("Pressione Enter para voltar ao menu principal...")        
         
-
-    elif opcao == 2:
-        print("Região: Litoral, Serra e Norte.\n")
-        regiao = input("Informe a primeira letra da região: ")
-
-        regiao = regiao.upper()
-
-        print("\n")
-
-        match regiao:
+        case 2: #Selecionado a opção 2 no menu inicial:
+            limpar_tela()
+            print("==========VISUALIZAR VENDAS==========")
             
-            case 'L':
-                limpar_tela()
-                print("==========REGIÃO LITORAL==========")
-                print("Vendedores: Kaue, João, Felipe e Anderson\n")
-                vendedor = input("Informe a primeira letra do vendedor: ")
-                vendedor = vendedor.upper()
-                
-                match vendedor:
-                    
-                    case 'K':
-                        print("Kaue")
-                        print("Vendas: ")
-                    
-                    case 'J':
-                        print("João")
-                        print("Vendas: ")
-                    
-                    case 'F':
-                        print("Felipe")
-                        print("Vendas: ")
-                        
-                    case 'A':
-                        print("Anderson")
-                        print("Vendas: ")
-                    
-            case 'S':
-                limpar_tela()
-                print("==========REGIÃO SERRA==========")
-                print("Vendedores: Alice, Paulo e Rogério\n")
-                vendedor = input("Informe a primeira letra do vendedor: ")
-                vendedor = vendedor.upper()
-                
-                match vendedor:
-                    
-                    case 'A':
-                        print("Alice")
-                        print("Vendas: ")
-                    
-                    case 'P':
-                        print("Paulo")
-                        print("Vendas: ")         
-                    
-                    case 'R':
-                        print("Rogério")
-                        print("Vendas: ")         
-                                    
-            case 'N':
-                limpar_tela()
-                print("==========REGIÃO NORTE==========")
-                print("Vendedores: Cleiton, Mauricio e Joana\n")
-                vendedor = input("Informe a primeira letra do vendedor: ")
-                vendedor = vendedor.upper()
-                
-                match vendedor:
-                    
-                    case 'C':
-                        print("Cleiton")
-                        print("Vendas: ")
-                    
-                    case 'M':
-                        print("Mauricio")
-                        print("Vendas: ")         
-                    
-                    case 'J':
-                        print("Joana")
-                        print("Vendas: ")
+            #Imprime a tabela dos vendedores com ID, NOME, REGIÃO e VENDAS.
+            imprimir_tabela_vendas()  
+            
+            input("\nPressione Enter para voltar ao menu principal...")
+            
+           
+        case 3: #Selecionado a opção 3 no menu inicial:
+            limpar_tela()
+            print("==========EXIBIR TOTAL DE VENDAS==========")
+            
+            #Imprime a tabela do total de vendas, somando as vendas de todos os vendedores.
+            exibir_tabela_total_de_vendas()
+            
+            input("Pressione Enter para voltar ao menu principal...")
     
-    elif opcao == 3:
-        print("Encerrando o programa...")
-        break  # Sai do loop e encerra o programa.
+        case 4: #Selecionado a opção 4 no menu inicial:
+            print("Encerrando o programa...")
+            break  # Sai do loop e encerra o programa.
     
-    else:
-        print("Opção inválida. Tente novamente.")
-        input("Pressione Enter para continuar...")
+        case _: #Selecionado uma opção inválida (!= 1, 2, 3, 4)
+            print("Opção inválida. Tente novamente.")
+            input("Pressione Enter para continuar...")
                                                         
     
