@@ -6,14 +6,12 @@ Um sistema simples de controle de vendas em Python.
 
 ## 📄 Descrição
 
-Este é um projeto de controle de vendas em Python que permite registrar e visualizar vendas por vendedores em diferentes regiões.
+Este é um projeto de controle de vendas em Python que permite registrar e visualizar vendas por vendedores de diferentes regiões.
 
 ## ✨ Funcionalidades
 
 - ✅ Registrar vendas
-- ⚠️ Visualizar vendas
-- ❌ Relatórios de vendas
-- ❌ Gráficos de desempenho
+- ✅ Visualizar vendas
 
 ## 📋 Requisitos
 
